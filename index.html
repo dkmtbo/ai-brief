@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Brief — Big 4 Lens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0c0d10;
+    --surface: #14161b;
+    --surface-hover: #181b22;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.16);
+    --text: #e9ebef;
+    --text-2: #a2a8b4;
+    --text-3: #6b7280;
+    --gold: #e0a93b;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    padding: 0 20px 80px;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; }
+
+  /* Masthead */
+  header { padding: 48px 0 22px; border-bottom: 1px solid var(--border-strong); }
+  .kicker {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: 12px;
+  }
+  .wordmark {
+    font-family: var(--serif); font-weight: 600; font-size: 40px;
+    letter-spacing: -0.01em; line-height: 1.05; color: var(--text);
+  }
+  .wordmark .accent { color: var(--gold); }
+  .tagline { color: var(--text-2); font-size: 15px; margin-top: 10px; max-width: 60ch; }
+  .dateline {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin-top: 18px; font-size: 13px; color: var(--text-3);
+  }
+  .dateline .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-3); }
+  .live { color: #5ec98a; }
+  .live .pulse {
+    display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+    background: #5ec98a; margin-right: 6px; vertical-align: middle;
+  }
+
+  /* Filter bar */
+  .filters {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding: 20px 0; position: sticky; top: 0; background: var(--bg);
+    z-index: 5; border-bottom: 1px solid var(--border);
+  }
+  .chip {
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    color: var(--text-2); background: transparent;
+    border: 1px solid var(--border-strong); border-radius: 999px;
+    padding: 6px 14px; cursor: pointer; transition: all .15s ease;
+    white-space: nowrap;
+  }
+  .chip:hover { color: var(--text); border-color: rgba(255,255,255,0.28); }
+  .chip.active { color: #0c0d10; background: var(--gold); border-color: var(--gold); }
+  .chip .count { opacity: 0.6; margin-left: 5px; font-variant-numeric: tabular-nums; }
+
+  /* Story grid */
+  .feed {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(390px, 1fr));
+    gap: 16px;
+    padding-top: 24px;
+  }
+  .story {
+    position: relative;
+    display: flex; flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 22px 20px;
+    overflow: hidden;
+    transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .story::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .story.deals::before       { background: #e0a93b; }
+  .story.regulatory::before  { background: #e15a5a; }
+  .story.workflow::before    { background: #2dc8a0; }
+  .story.models::before      { background: #5a96eb; }
+  .story.competitive::before { background: #a587f2; }
+  .story:hover { border-color: var(--border-strong); background: var(--surface-hover); transform: translateY(-3px); }
+
+  .story-meta {
+    display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
+    margin-bottom: 14px; font-size: 12.5px; color: var(--text-3);
+  }
+  .tag {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+    padding: 4px 10px; border-radius: 6px;
+  }
+  .tag.deals      { background: rgba(224,169,59,0.15);  color: #f0c46a; }
+  .tag.regulatory { background: rgba(225,90,90,0.15);   color: #f0918f; }
+  .tag.workflow   { background: rgba(45,200,160,0.15);  color: #5fd5b2; }
+  .tag.models     { background: rgba(90,150,235,0.15);  color: #86b4f0; }
+  .tag.competitive{ background: rgba(165,135,242,0.16); color: #bba6f6; }
+  .source { color: var(--text-2); font-weight: 500; }
+  .story h2 {
+    font-family: var(--serif); font-weight: 500; font-size: 20px;
+    line-height: 1.3; letter-spacing: -0.01em; color: var(--text);
+    margin-bottom: 10px;
+  }
+  .story p { color: var(--text-2); font-size: 14.5px; line-height: 1.6; flex: 1; }
+  .story a.read {
+    display: inline-flex; align-items: center; gap: 5px;
+    margin-top: 16px; font-size: 13px; font-weight: 500;
+    color: var(--gold); text-decoration: none; align-self: flex-start;
+  }
+  .story a.read:hover { text-decoration: underline; }
+  .story a.read .arr { transition: transform .15s ease; }
+  .story a.read:hover .arr { transform: translateX(3px); }
+
+  .empty { grid-column: 1 / -1; padding: 60px 0; text-align: center; color: var(--text-3); font-size: 14px; display: none; }
+
+  /* Footer */
+  footer { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--text-3); font-size: 12.5px; line-height: 1.7; }
+  footer .note { display: inline-flex; align-items: center; gap: 7px; color: var(--text-2); font-weight: 500; margin-bottom: 8px; }
+  footer .note .badge { background: rgba(94,201,138,0.16); color: #7fd6a3; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 5px; }
+
+  @media (max-width: 480px) {
+    .wordmark { font-size: 32px; }
+    .feed { grid-template-columns: 1fr; }
+    header { padding-top: 36px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Daily intelligence · Professional services</div>
+    <div class="wordmark">The AI <span class="accent">Brief</span></div>
+    <p class="tagline">The biggest AI developments, filtered for the Big&nbsp;4 and the international-tax desk. Signal only — deals, regulation, workflow tools, and what rival firms are shipping.</p>
+    <div class="dateline">
+      <span class="live"><span class="pulse"></span>Live</span>
+      <span class="dot"></span>
+      <span id="today">Thursday, May 21, 2026</span>
+      <span class="dot"></span>
+      <span id="count-line">6 stories</span>
+    </div>
+  </header>
+
+  <nav class="filters" id="filters">
+    <button class="chip active" data-filter="all">All</button>
+    <button class="chip" data-filter="deals">Big 4 deals</button>
+    <button class="chip" data-filter="regulatory">Regulatory</button>
+    <button class="chip" data-filter="workflow">Workflow tools</button>
+    <button class="chip" data-filter="competitive">Competitive</button>
+    <button class="chip" data-filter="models">Model releases</button>
+  </nav>
+
+  <main class="feed" id="feed">
+
+    <article class="story deals" data-tag="deals">
+      <div class="story-meta">
+        <span class="tag deals">Big 4 deals</span>
+        <span class="source">International Tax Review</span>
+        <span class="dot">·</span>
+        <span>19 May</span>
+      </div>
+      <h2>KPMG and Anthropic sign a global AI alliance — Claude for 276,000 staff, tax clients first</h2>
+      <p>KPMG is embedding Anthropic's Claude into its Digital Gateway platform and giving its 276,000-person global workforce access, with the rollout aimed first at tax clients and private equity. The firm says building an agent to adjust to changing tax regulations — once a multi-week effort across many tools — now takes minutes. The third Big&nbsp;4–frontier-model alliance this month, and the most explicitly tax-led.</p>
+      <a class="read" href="https://www.internationaltaxreview.com/article/2gdzta33vh75o0d67fda8/direct-tax/kpmg-embeds-anthropic-ai-tool-to-improve-tax-client-outcomes" target="_blank" rel="noopener">Read source <span class="arr">→</span></a>
+    </article>
+
+    <article class="story deals" data-tag="deals">
+      <div class="story-meta">
+        <span class="tag deals">Big 4 deals</span>
+        <span class="source">PwC</span>
+        <span class="dot">·</span>
+        <span>14 May</span>
+      </div>
+      <h2>PwC deepens its Anthropic alliance, will train and certify 30,000 staff on Claude</h2>
+      <p>PwC is expanding its strategic alliance with Anthropic, rolling out Claude Code and Cowork from US teams toward a global workforce of hundreds of thousands, and standing up a joint Center of Excellence. It plans to train and certify 30,000 professionals on Claude. For EY, it sharpens the open question of which model partnership becomes the firm-wide standard.</p>
+      <a class="read" href="https://www.pwc.com/us/en/about-us/newsroom/press-releases/anthropic-pwc-expand-alliance-agentic-enterprise.html" target="_blank" rel="noopener">Read source <span class="arr">→</span></a>
+    </article>
+
+    <article class="story regulatory" data-tag="regulatory">
+      <div class="story-meta">
+        <span class="tag regulatory">Regulatory</span>
+        <span class="source">European Council</span>
+        <span class="dot">·</span>
+        <span>7 May</span>
+      </div>
+      <h2>EU agrees a "Digital Omnibus" — high-risk AI Act duties slip to December 2027</h2>
+      <p>Council, Parliament and Commission negotiators reached a provisional deal — the first amendments to the AI Act since 2024. High-risk (Annex III) obligations move from August 2026 to December 2027, easing the near-term compliance crunch for firms deploying AI in regulated client work. Transparency rules for AI-generated content, though, tighten to a three-month grace period.</p>
+      <a class="read" href="https://www.consilium.europa.eu/en/press/press-releases/2026/05/07/artificial-intelligence-council-and-parliament-agree-to-simplify-and-streamline-rules/" target="_blank" rel="noopener">Read source <span class="arr">→</span></a>
+    </article>
+
+    <article class="story competitive" data-tag="competitive">
+      <div class="story-meta">
+        <span class="tag competitive">Competitive</span>
+        <span class="source">The Irish Times</span>
+        <span class="dot">·</span>
+        <span>19 May</span>
+      </div>
+      <h2>Big Four now post more job ads for AI specialists than for auditors</h2>
+      <p>AI-skilled roles made up almost 7% of Big&nbsp;4 job postings in English-speaking countries last year — outpacing auditor ads and more than triple the 2022 share. The shift signals where Deloitte, EY, KPMG and PwC are putting headcount as agents absorb routine work. A direct read on how the talent model around you is being redrawn.</p>
+      <a class="read" href="https://www.irishtimes.com/business/2026/05/19/big-four-post-more-job-ads-for-ai-specialists-than-auditors/" target="_blank" rel="noopener">Read source <span class="arr">→</span></a>
+    </article>
+
+    <article class="story regulatory" data-tag="regulatory">
+      <div class="story-meta">
+        <span class="tag regulatory">Regulatory</span>
+        <span class="source">Bloomberg Tax</span>
+        <span class="dot">·</span>
+        <span>19 May</span>
+      </div>
+      <h2>Audit regulator pressed to redesign oversight as AI tops PCAOB comment letters</h2>
+      <p>Dozens of public comment letters are urging the PCAOB to put AI (and private equity) at the top of its agenda, asking for steady, consistent guidance on AI-assisted audit evidence. Auditors warn that without clear standards, inspectors may demand unreasonable detail and push firms back to manual sampling. The board aims to sketch its strategy as early as June.</p>
+      <a class="read" href="https://news.bloombergtax.com/financial-accounting/audit-board-pressed-to-redesign-oversight-for-ai-fraud-risks" target="_blank" rel="noopener">Read source <span class="arr">→</span></a>
+    </article>
+
+    <article class="story workflow" data-tag="workflow">
+      <div class="story-meta">
+        <span class="tag workflow">Workflow tools</span>
+        <span class="source">Bloomberg Tax</span>
+        <span class="dot">·</span>
+        <span>May 2026</span>
+      </div>
+      <h2>EY rolls out up to 150 agentic-AI "agents" to 80,000 tax professionals</h2>
+      <p>EY is deploying as many as 150 purpose-built AI agents to 80,000 tax professionals worldwide, reportedly backed by $1.4B, with each agent owning a narrow task — statutory research, compliance-document analysis, return-prep guidance. Tax went first because of EY's deep in-house tax data. This one is your own desk's tooling story, not a rival's.</p>
+      <a class="read" href="https://news.bloombergtax.com/financial-accounting/big-four-firms-roll-out-ai-that-can-handle-routine-tasks-solo" target="_blank" rel="noopener">Read source <span class="arr">→</span></a>
+    </article>
+
+    <div class="empty" id="empty">No stories in this category today.</div>
+
+  </main>
+
+  <footer>
+    <div class="note"><span class="badge">Live data</span> Curated from public reporting · 7–21 May 2026.</div>
+    <div>The AI Brief · filtered for EY / Big&nbsp;4 context · refreshed daily.<br/>Next phase: auto-updated each morning from a live news feed.</div>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var d = new Date();
+    var opts = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+    var el = document.getElementById("today");
+    if (el) el.textContent = d.toLocaleDateString("en-US", opts);
+
+    var stories = Array.prototype.slice.call(document.querySelectorAll(".story"));
+    var chips = Array.prototype.slice.call(document.querySelectorAll(".chip"));
+    var empty = document.getElementById("empty");
+    var countLine = document.getElementById("count-line");
+
+    function counts() {
+      var c = {};
+      stories.forEach(function (s) {
+        var t = s.getAttribute("data-tag");
+        c[t] = (c[t] || 0) + 1;
+      });
+      return c;
+    }
+    var c = counts();
+    chips.forEach(function (chip) {
+      var f = chip.getAttribute("data-filter");
+      var n = f === "all" ? stories.length : (c[f] || 0);
+      var span = document.createElement("span");
+      span.className = "count";
+      span.textContent = n;
+      chip.appendChild(span);
+    });
+
+    function apply(filter) {
+      var shown = 0;
+      stories.forEach(function (s) {
+        var match = filter === "all" || s.getAttribute("data-tag") === filter;
+        s.style.display = match ? "" : "none";
+        if (match) shown++;
+      });
+      empty.style.display = shown === 0 ? "block" : "none";
+      countLine.textContent = shown + (shown === 1 ? " story" : " stories") + (filter === "all" ? "" : " in view");
+    }
+
+    chips.forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        chips.forEach(function (x) { x.classList.remove("active"); });
+        chip.classList.add("active");
+        apply(chip.getAttribute("data-filter"));
+      });
+    });
+  })();
+</script>
+</body>
+</html>
